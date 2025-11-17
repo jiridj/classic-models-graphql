@@ -1,0 +1,9 @@
+configurationset:
+  - configuration:
+      name: classic_models_rest
+      Content-Type: application/json
+      Authorization: Bearer ${JWT_TOKEN}
+  - configuration:
+      name: classic_models_auth
+      Content-Type: application/json
+

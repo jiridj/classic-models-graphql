@@ -1,0 +1,24 @@
+{
+  "name": "classic-models-graphql",
+  "version": "1.0.0",
+  "description": "GraphQL API for Classic Models using IBM API Connect for GraphQL",
+  "main": "index.js",
+  "scripts": {
+    "stepzen:start": "stepzen start",
+    "stepzen:deploy": "stepzen deploy",
+    "stepzen:import": "stepzen import curl",
+    "stepzen:import:openapi": "stepzen import openapi"
+  },
+  "keywords": [
+    "graphql",
+    "ibm-api-connect",
+    "stepzen",
+    "classic-models"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "stepzen": "latest"
+  }
+}
+

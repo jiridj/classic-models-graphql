@@ -1,0 +1,120 @@
+type Product {
+  productcode: String!
+  productname: String!
+  productline: String!
+  productscale: String!
+  productvendor: String!
+  productdescription: String!
+  quantityinstock: Int!
+  buyprice: String!
+  msrp: String!
+}
+
+type ProductLine {
+  productline: String!
+  textdescription: String
+  htmldescription: String
+  image: String
+}
+
+type Query {
+  products: [Product]
+    @rest(
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/"
+      configuration: "classic_models_rest"
+    )
+
+  product(productcode: String!): Product
+    @rest(
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/$productcode/"
+      configuration: "classic_models_rest"
+    )
+
+  productLines: [ProductLine]
+    @rest(
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/"
+      configuration: "classic_models_rest"
+    )
+
+  productLine(productline: String!): ProductLine
+    @rest(
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/$productline/"
+      configuration: "classic_models_rest"
+    )
+}
+
+type Mutation {
+  createProduct(
+    productcode: String!
+    productname: String!
+    productline: String!
+    productscale: String!
+    productvendor: String!
+    productdescription: String!
+    quantityinstock: Int!
+    buyprice: String!
+    msrp: String!
+  ): Product
+    @rest(
+      method: POST
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/"
+      configuration: "classic_models_rest"
+      postbody: "{\"productcode\": \"$productcode\", \"productname\": \"$productname\", \"productline\": \"$productline\", \"productscale\": \"$productscale\", \"productvendor\": \"$productvendor\", \"productdescription\": \"$productdescription\", \"quantityinstock\": $quantityinstock, \"buyprice\": \"$buyprice\", \"msrp\": \"$msrp\"}"
+    )
+
+  updateProduct(
+    productcode: String!
+    productname: String!
+    productline: String!
+    productscale: String!
+    productvendor: String!
+    productdescription: String!
+    quantityinstock: Int!
+    buyprice: String!
+    msrp: String!
+  ): Product
+    @rest(
+      method: PUT
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/$productcode/"
+      configuration: "classic_models_rest"
+      postbody: "{\"productcode\": \"$productcode\", \"productname\": \"$productname\", \"productline\": \"$productline\", \"productscale\": \"$productscale\", \"productvendor\": \"$productvendor\", \"productdescription\": \"$productdescription\", \"quantityinstock\": $quantityinstock, \"buyprice\": \"$buyprice\", \"msrp\": \"$msrp\"}"
+    )
+
+  deleteProduct(productcode: String!): Boolean
+    @rest(
+      method: DELETE
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/$productcode/"
+      configuration: "classic_models_rest"
+    )
+
+  createProductLine(
+    productline: String!
+    textdescription: String
+    htmldescription: String
+  ): ProductLine
+    @rest(
+      method: POST
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/"
+      configuration: "classic_models_rest"
+      postbody: "{\"productline\": \"$productline\", \"textdescription\": $textdescription, \"htmldescription\": $htmldescription}"
+    )
+
+  updateProductLine(
+    productline: String!
+    textdescription: String
+    htmldescription: String
+  ): ProductLine
+    @rest(
+      method: PUT
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/$productline/"
+      configuration: "classic_models_rest"
+      postbody: "{\"productline\": \"$productline\", \"textdescription\": $textdescription, \"htmldescription\": $htmldescription}"
+    )
+
+  deleteProductLine(productline: String!): Boolean
+    @rest(
+      method: DELETE
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/$productline/"
+      configuration: "classic_models_rest"
+    )
+}

@@ -1,0 +1,87 @@
+type LoginResponse {
+  access: String!
+  refresh: String!
+  user: User!
+}
+
+type User {
+  id: Int!
+  username: String!
+  email: String!
+  first_name: String
+  last_name: String
+  is_active: Boolean
+  date_joined: String!
+}
+
+type SignupResponse {
+  message: String!
+  user: User!
+}
+
+type TokenRefresh {
+  access: String!
+  refresh: String!
+}
+
+type Query {
+  me: User
+    @rest(
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/me/"
+      headers: [
+        { name: "Authorization", value: "Bearer ${JWT_TOKEN}" }
+        { name: "Content-Type", value: "application/json" }
+      ]
+    )
+}
+
+type Mutation {
+  login(username: String!, password: String!): LoginResponse
+    @rest(
+      method: POST
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/login/"
+      headers: [
+        { name: "Content-Type", value: "application/json" }
+      ]
+      postbody: "{\"username\": \"$username\", \"password\": \"$password\"}"
+    )
+
+  signup(
+    username: String!
+    email: String!
+    first_name: String!
+    last_name: String!
+    password: String!
+    password_confirm: String!
+  ): SignupResponse
+    @rest(
+      method: POST
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/signup/"
+      headers: [
+        { name: "Content-Type", value: "application/json" }
+      ]
+      postbody: "{\"username\": \"$username\", \"email\": \"$email\", \"first_name\": \"$first_name\", \"last_name\": \"$last_name\", \"password\": \"$password\", \"password_confirm\": \"$password_confirm\"}"
+    )
+
+  refreshToken(refresh: String!): TokenRefresh
+    @rest(
+      method: POST
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/refresh/"
+      headers: [
+        { name: "Content-Type", value: "application/json" }
+      ]
+      postbody: "{\"refresh\": \"$refresh\"}"
+    )
+
+  logout(refresh: String!): Boolean
+    @rest(
+      method: POST
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/logout/"
+      headers: [
+        { name: "Authorization", value: "Bearer ${JWT_TOKEN}" }
+        { name: "Content-Type", value: "application/json" }
+      ]
+      postbody: "{\"refresh\": \"$refresh\"}"
+    )
+}
+

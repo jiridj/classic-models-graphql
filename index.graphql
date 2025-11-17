@@ -1,0 +1,5 @@
+schema @sdl(files: ["products.graphql", "customers.graphql", "orders.graphql", "employees.graphql", "offices.graphql", "payments.graphql", "orderdetails.graphql", "auth.graphql"]) {
+  query: Query
+  mutation: Mutation
+}
+

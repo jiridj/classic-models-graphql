@@ -1,0 +1,64 @@
+type Order {
+  ordernumber: Int!
+  orderdate: String!
+  requireddate: String!
+  shippeddate: String
+  status: String!
+  comments: String
+  customernumber: Int!
+}
+
+type Query {
+  orders: [Order]
+    @rest(
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orders/"
+      configuration: "classic_models_rest"
+    )
+
+  order(ordernumber: Int!): Order
+    @rest(
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orders/$ordernumber/"
+      configuration: "classic_models_rest"
+    )
+}
+
+type Mutation {
+  createOrder(
+    ordernumber: Int!
+    orderdate: String!
+    requireddate: String!
+    shippeddate: String
+    status: String!
+    comments: String
+    customernumber: Int!
+  ): Order
+    @rest(
+      method: POST
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orders/"
+      configuration: "classic_models_rest"
+      postbody: "{\"ordernumber\": $ordernumber, \"orderdate\": \"$orderdate\", \"requireddate\": \"$requireddate\", \"shippeddate\": $shippeddate, \"status\": \"$status\", \"comments\": $comments, \"customernumber\": $customernumber}"
+    )
+
+  updateOrder(
+    ordernumber: Int!
+    orderdate: String!
+    requireddate: String!
+    shippeddate: String
+    status: String!
+    comments: String
+    customernumber: Int!
+  ): Order
+    @rest(
+      method: PUT
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orders/$ordernumber/"
+      configuration: "classic_models_rest"
+      postbody: "{\"ordernumber\": $ordernumber, \"orderdate\": \"$orderdate\", \"requireddate\": \"$requireddate\", \"shippeddate\": $shippeddate, \"status\": \"$status\", \"comments\": $comments, \"customernumber\": $customernumber}"
+    )
+
+  deleteOrder(ordernumber: Int!): Boolean
+    @rest(
+      method: DELETE
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orders/$ordernumber/"
+      configuration: "classic_models_rest"
+    )
+}
