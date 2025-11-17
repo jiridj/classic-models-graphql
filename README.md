@@ -19,11 +19,29 @@ This project creates a GraphQL API using IBM API Connect for GraphQL (formerly S
    ```
 
 2. **Login to IBM API Connect for GraphQL**:
-   ```bash
-   stepzen login <domain> -i <instance_id>
+   
+   **Option A: Using the login script (Recommended)**
+   
+   Create a `.env` file in the root directory with your StepZen credentials:
+   ```env
+   STEPZEN_DOMAIN=a-vir-s1.apicgql.ipaas.ibmappdomain.cloud
+   STEPZEN_INSTANCE_ID=20250617-1018-3208-90a6-b4987b85b1f7
+   STEPZEN_API_KEY=your_api_key_here
+   STEPZEN_INTROSPECTION=introspection.a-vir-s1.apicgql.ipaas.ibmappdomain.cloud
    ```
    
-   Replace `<domain>` and `<instance_id>` with your specific IBM API Connect for GraphQL domain and instance ID.
+   Then run the login script:
+   ```bash
+   ./login.sh
+   ```
+   
+   **Option B: Manual login**
+   
+   ```bash
+   stepzen login <domain> -i <instance_id> -k <api_key> --introspection <introspection_url>
+   ```
+   
+   Replace the placeholders with your specific IBM API Connect for GraphQL credentials.
 
 3. **Configure JWT Authentication**:
    
@@ -84,6 +102,8 @@ This project creates a GraphQL API using IBM API Connect for GraphQL (formerly S
 ├── payments.graphql         # Payment types, queries, and mutations
 ├── orderdetails.graphql     # OrderDetail types, queries, and mutations
 ├── auth.graphql             # Authentication queries and mutations
+├── login.sh                 # Script to login to StepZen using .env variables
+├── .env.example             # Example environment variables file
 ├── package.json            # Node.js dependencies
 └── README.md               # This file
 ```
