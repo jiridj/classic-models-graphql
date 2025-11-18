@@ -1,3 +1,11 @@
+type ProductLine {
+  productline: String!
+  textdescription: String
+  htmldescription: String
+  image: String
+  products: [Product!]
+}
+
 type Product {
   productcode: String!
   productname: String!
@@ -10,124 +18,57 @@ type Product {
   msrp: String!
 }
 
-type ProductLine {
-  productline: String!
-  textdescription: String
-  htmldescription: String
-  image: String
-}
-
 type Query {
-  products: [Product]
+  """
+  Fetch product lines.
+  """
+  _productLines(token: Secret!): [ProductLine!]!
+    @rest(
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/"
+      configuration: "classic_models_rest"
+      tls: "classic_models_rest"
+      headers: [
+        { name: "Authorization", value: "Bearer $token" }
+      ]
+    )
+
+  """
+  Fetch all products.
+  """
+  _products(token: Secret!): [Product!]!
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/"
       configuration: "classic_models_rest"
       tls: "classic_models_rest"
       headers: [
-        { name: "Authorization", value: "Bearer ${headers.authorization}" }
+        { name: "Authorization", value: "Bearer $token" }
       ]
     )
 
-  product(productcode: String!): Product
-    @rest(
-      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/$productcode/"
-      configuration: "classic_models_rest"
-      tls: "classic_models_rest"
-    )
-
-  productLines: [ProductLine]
-    @rest(
-      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/"
-      configuration: "classic_models_rest"
-      tls: "classic_models_rest"
-    )
-
-  productLine(productline: String!): ProductLine
-    @rest(
-      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/$productline/"
-      configuration: "classic_models_rest"
-      tls: "classic_models_rest"
-    )
-}
-
-type Mutation {
-  createProduct(
-    productcode: String!
-    productname: String!
-    productline: String!
-    productscale: String!
-    productvendor: String!
-    productdescription: String!
-    quantityinstock: Int!
-    buyprice: String!
-    msrp: String!
-  ): Product
-    @rest(
-      method: POST
-      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/"
-      configuration: "classic_models_rest"
-      tls: "classic_models_rest"
-      postbody: "{\"productcode\": \"$productcode\", \"productname\": \"$productname\", \"productline\": \"$productline\", \"productscale\": \"$productscale\", \"productvendor\": \"$productvendor\", \"productdescription\": \"$productdescription\", \"quantityinstock\": $quantityinstock, \"buyprice\": \"$buyprice\", \"msrp\": \"$msrp\"}"
-    )
-
-  updateProduct(
-    productcode: String!
-    productname: String!
-    productline: String!
-    productscale: String!
-    productvendor: String!
-    productdescription: String!
-    quantityinstock: Int!
-    buyprice: String!
-    msrp: String!
-  ): Product
-    @rest(
-      method: PUT
-      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/$productcode/"
-      configuration: "classic_models_rest"
-      tls: "classic_models_rest"
-      postbody: "{\"productcode\": \"$productcode\", \"productname\": \"$productname\", \"productline\": \"$productline\", \"productscale\": \"$productscale\", \"productvendor\": \"$productvendor\", \"productdescription\": \"$productdescription\", \"quantityinstock\": $quantityinstock, \"buyprice\": \"$buyprice\", \"msrp\": \"$msrp\"}"
-    )
-
-  deleteProduct(productcode: String!): Boolean
-    @rest(
-      method: DELETE
-      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/$productcode/"
-      configuration: "classic_models_rest"
-      tls: "classic_models_rest"
-    )
-
-  createProductLine(
-    productline: String!
-    textdescription: String
-    htmldescription: String
-  ): ProductLine
-    @rest(
-      method: POST
-      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/"
-      configuration: "classic_models_rest"
-      tls: "classic_models_rest"
-      postbody: "{\"productline\": \"$productline\", \"textdescription\": $textdescription, \"htmldescription\": $htmldescription}"
-    )
-
-  updateProductLine(
-    productline: String!
-    textdescription: String
-    htmldescription: String
-  ): ProductLine
-    @rest(
-      method: PUT
-      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/$productline/"
-      configuration: "classic_models_rest"
-      tls: "classic_models_rest"
-      postbody: "{\"productline\": \"$productline\", \"textdescription\": $textdescription, \"htmldescription\": $htmldescription}"
-    )
-
-  deleteProductLine(productline: String!): Boolean
-    @rest(
-      method: DELETE
-      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/$productline/"
-      configuration: "classic_models_rest"
-      tls: "classic_models_rest"
+  """
+  Get product lines with nested products.
+  First logs in to get an access token (using credentials from environment variables),
+  then fetches product lines.
+  
+  Note: Products are not automatically nested due to StepZen limitations with
+  accessing sequence context in @materializer. To get products, query them separately
+  using the _products query with the access token, then filter by productline in your
+  application code.
+  
+  Environment variables required:
+  - STEPZEN_CLASSIC_MODELS_USERNAME
+  - STEPZEN_CLASSIC_MODELS_PASSWORD
+  """
+  productLines: [ProductLine!]!
+    @sequence(
+      steps: [
+        { query: "_login" }
+        {
+          query: "_productLines"
+          arguments: [
+            { name: "token", field: "§0.access" }
+          ]
+        }
+      ]
     )
 }

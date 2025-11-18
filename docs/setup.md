@@ -1,5 +1,21 @@
 # Setup Guide
 
+## Postman Collection
+
+A complete Postman collection is available at `Classic-Models-GraphQL.postman_collection.json`. Import this into Postman to get all queries and mutations pre-configured with:
+- Automatic token extraction from login responses
+- Collection variables for base URL and authentication tokens
+- All requests organized by entity (Authentication, Products, Customers, etc.)
+- Example variables for testing
+
+To use:
+1. Open Postman
+2. Click Import
+3. Select `Classic-Models-GraphQL.postman_collection.json`
+4. Update the `baseUrl` variable if needed (default: `http://localhost:5001/api/classic-models/v1`)
+5. Run the "Login" request to automatically set tokens
+6. All other requests will use the token automatically
+
 ## Prerequisites
 
 1. **IBM API Connect for GraphQL Account**: Sign up for IBM API Connect for GraphQL and obtain your domain and instance ID
@@ -114,7 +130,7 @@ This command deploys your GraphQL API to your IBM API Connect for GraphQL enviro
 ├── offices.graphql          # Office types, queries, and mutations
 ├── payments.graphql         # Payment types, queries, and mutations
 ├── orderdetails.graphql     # OrderDetail types, queries, and mutations
-├── auth.graphql             # Authentication queries and mutations
+├── products.graphql         # Product lines and products queries
 ├── login.sh                 # Script to login to StepZen using .env variables
 ├── setup-tls.sh             # Script to export TLS certificate
 ├── Makefile                 # Makefile with common commands (start, deploy, etc.)

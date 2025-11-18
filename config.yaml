@@ -8,5 +8,7 @@ configurationset:
   - configuration:
       name: classic_models_auth
       Content-Type: application/json
+      username: STEPZEN_CLASSIC_MODELS_USERNAME
+      password: STEPZEN_CLASSIC_MODELS_PASSWORD
       ca: STEPZEN_CLASSIC_MODELS_CA
 

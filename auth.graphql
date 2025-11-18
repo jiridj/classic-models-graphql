@@ -14,31 +14,15 @@ type User {
   date_joined: String!
 }
 
-type SignupResponse {
-  message: String!
-  user: User!
-}
-
-type TokenRefresh {
-  access: String!
-  refresh: String!
-}
-
 type Query {
-  me: User
-    @rest(
-      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/me/"
-      configuration: "classic_models_auth"
-      tls: "classic_models_auth"
-      headers: [
-        { name: "Authorization", value: "${headers.authorization}" }
-        { name: "Content-Type", value: "application/json" }
-      ]
-    )
-}
-
-type Mutation {
-  login(username: String!, password: String!): LoginResponse
+  """
+  Internal login query to get an access token.
+  Uses hardcoded username and password for now.
+  TODO: Find proper way to access config values from config.yaml in postbody.
+  
+  This query is intended to be used in @sequence directives.
+  """
+  _login: LoginResponse
     @rest(
       method: POST
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/login/"
@@ -49,69 +33,8 @@ type Mutation {
       ]
       postbody: """
       {
-        "username": "{{.Get "username"}}",
-        "password": "{{.Get "password"}}"
-      }
-      """
-    )
-
-  signup(
-    username: String!
-    email: String!
-    first_name: String!
-    last_name: String!
-    password: String!
-    password_confirm: String!
-  ): SignupResponse
-    @rest(
-      method: POST
-      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/signup/"
-      configuration: "classic_models_auth"
-      tls: "classic_models_auth"
-      headers: [
-        { name: "Content-Type", value: "application/json" }
-      ]
-      postbody: """
-      {
-        "username": "{{.Get "username"}}",
-        "email": "{{.Get "email"}}",
-        "first_name": "{{.Get "first_name"}}",
-        "last_name": "{{.Get "last_name"}}",
-        "password": "{{.Get "password"}}",
-        "password_confirm": "{{.Get "password_confirm"}}"
-      }
-      """
-    )
-
-  refreshToken(refresh: String!): TokenRefresh
-    @rest(
-      method: POST
-      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/refresh/"
-      configuration: "classic_models_auth"
-      tls: "classic_models_auth"
-      headers: [
-        { name: "Content-Type", value: "application/json" }
-      ]
-      postbody: """
-      {
-        "refresh": "{{.Get "refresh"}}"
-      }
-      """
-    )
-
-  logout(refresh: String!): Boolean
-    @rest(
-      method: POST
-      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/logout/"
-      configuration: "classic_models_auth"
-      tls: "classic_models_auth"
-      headers: [
-        { name: "Authorization", value: "${headers.authorization}" }
-        { name: "Content-Type", value: "application/json" }
-      ]
-      postbody: """
-      {
-        "refresh": "{{.Get "refresh"}}"
+        "username": "demo",
+        "password": "demo123"
       }
       """
     )

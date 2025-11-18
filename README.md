@@ -15,38 +15,51 @@ This project creates a GraphQL API using IBM API Connect for GraphQL (formerly S
    ```
    (See [Setup Guide](./docs/setup.md) for details)
 
-3. **Start the server**:
+3. **Set environment variables** (REQUIRED before starting):
+   
+   **Option 1: Using setup script (recommended)**
+   ```bash
+   # Create a .env file with your credentials
+   echo "STEPZEN_CLASSIC_MODELS_USERNAME=demo" >> .env
+   echo "STEPZEN_CLASSIC_MODELS_PASSWORD=demo123" >> .env
+   
+   # Load environment variables
+   source setup-env.sh
+   ```
+   
+   **Option 2: Manual export**
+   ```bash
+   export STEPZEN_CLASSIC_MODELS_USERNAME=demo
+   export STEPZEN_CLASSIC_MODELS_PASSWORD=demo123
+   ```
+   
+   **Important**: These must be set in the same shell session where you run `make start`.
+
+4. **Start the server**:
    ```bash
    make start
    ```
 
-4. **Open GraphiQL** in your browser:
+5. **Open GraphiQL** in your browser:
    ```
    http://localhost:5001
    ```
 
-5. **Login to get a token** (in GraphiQL):
+6. **Query product lines with nested products**:
    ```graphql
-   mutation {
-     login(username: "demo", password: "demo123") {
-       access
-       refresh
+   query {
+     productLines {
+       productline
+       textdescription
+       products(token: "YOUR_ACCESS_TOKEN") {
+         productname
+         productcode
+       }
      }
    }
    ```
-
-6. **Add Authorization header** in GraphiQL:
-   - Find the "Headers" section at the bottom
-   - Add: `Authorization: Bearer YOUR_ACCESS_TOKEN`
-   - See [GraphiQL Authentication Guide](./docs/graphiql-authentication.md) for details
-
-7. **Make authenticated requests** in GraphiQL or via curl:
-   ```bash
-   curl -X POST http://localhost:5001/api/classic-models/v1 \
-     -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
-     -H "Content-Type: application/json" \
-     -d '{"query": "{ products { productname } }"}'
-   ```
+   
+   Note: The `productLines` query automatically logs in using credentials from environment variables.
 
 ## Documentation
 
@@ -57,6 +70,17 @@ This project creates a GraphQL API using IBM API Connect for GraphQL (formerly S
 - **[Examples](./docs/examples.md)** - Example queries and mutations
 - **[Troubleshooting](./docs/troubleshooting.md)** - Common issues and solutions
 - **[Customization](./docs/customization.md)** - How to customize and extend the API
+
+## Postman Collection
+
+A complete Postman collection with all queries and mutations is available:
+- **File**: `Classic-Models-GraphQL.postman_collection.json`
+- **Import**: Import this file into Postman to get all requests pre-configured
+- **Features**:
+  - All queries and mutations organized by entity
+  - Automatic token extraction from login response
+  - Collection variables for base URL and tokens
+  - Example variables for all requests
 
 ## Available Commands
 

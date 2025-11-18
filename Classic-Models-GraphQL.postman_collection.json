@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "classic-models-graphql-api",
+		"name": "Classic Models GraphQL API",
+		"description": "GraphQL API collection for Classic Models - Product Lines and Products",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Product Lines",
+			"item": [
+				{
+					"name": "Get Product Lines",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GetProductLines {\n  productLines {\n    productline\n    textdescription\n    htmldescription\n    image\n    products {\n      productcode\n      productname\n      productline\n      productscale\n      productvendor\n      productdescription\n      quantityinstock\n      buyprice\n      msrp\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": ["{{baseUrl}}"]
+						},
+						"description": "Get all product lines with nested products. Uses environment variables STEPZEN_CLASSIC_MODELS_USERNAME and STEPZEN_CLASSIC_MODELS_PASSWORD for authentication."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product Lines (Basic)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GetProductLinesBasic {\n  productLines {\n    productline\n    textdescription\n    htmldescription\n    image\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": ["{{baseUrl}}"]
+						},
+						"description": "Get product lines without nested products (faster query)"
+					},
+					"response": []
+				}
+			],
+			"description": "Queries for product lines and products"
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5001/api/classic-models/v1",
+			"type": "string"
+		}
+	]
+}
