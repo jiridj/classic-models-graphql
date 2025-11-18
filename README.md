@@ -20,7 +20,12 @@ This project creates a GraphQL API using IBM API Connect for GraphQL (formerly S
    make start
    ```
 
-4. **Login to get a token**:
+4. **Open GraphiQL** in your browser:
+   ```
+   http://localhost:5001
+   ```
+
+5. **Login to get a token** (in GraphiQL):
    ```graphql
    mutation {
      login(username: "demo", password: "demo123") {
@@ -30,7 +35,12 @@ This project creates a GraphQL API using IBM API Connect for GraphQL (formerly S
    }
    ```
 
-5. **Make authenticated requests**:
+6. **Add Authorization header** in GraphiQL:
+   - Find the "Headers" section at the bottom
+   - Add: `Authorization: Bearer YOUR_ACCESS_TOKEN`
+   - See [GraphiQL Authentication Guide](./docs/graphiql-authentication.md) for details
+
+7. **Make authenticated requests** in GraphiQL or via curl:
    ```bash
    curl -X POST http://localhost:5001/api/classic-models/v1 \
      -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
@@ -42,6 +52,7 @@ This project creates a GraphQL API using IBM API Connect for GraphQL (formerly S
 
 - **[Setup Guide](./docs/setup.md)** - Detailed installation and configuration instructions
 - **[Authentication Guide](./docs/authentication.md)** - JWT token management and client-side implementation
+- **[GraphiQL Authentication](./docs/graphiql-authentication.md)** - How to use authenticated requests in StepZen's GraphiQL interface
 - **[API Reference](./docs/api-reference.md)** - Complete GraphQL schema documentation
 - **[Examples](./docs/examples.md)** - Example queries and mutations
 - **[Troubleshooting](./docs/troubleshooting.md)** - Common issues and solutions

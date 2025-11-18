@@ -4,6 +4,10 @@
 
 The API uses JWT authentication. **At runtime, clients should pass the JWT token in the Authorization header of each GraphQL request**, not as an environment variable.
 
+## Quick Links
+
+- **[Using GraphiQL with Authentication](./graphiql-authentication.md)** - Step-by-step guide for testing in StepZen's GraphiQL interface
+
 ## Client-Side Token Management Pattern
 
 ### 1. Login to Get Tokens
