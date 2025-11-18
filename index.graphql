@@ -1,4 +1,4 @@
-schema @sdl(files: ["auth.graphql", "products.graphql"]) {
+schema @sdl(files: ["auth.graphql"]) {
   query: Query
   mutation: Mutation
 }
