@@ -44,6 +44,19 @@ In GraphiQL, you can add custom headers in the bottom panel:
    
    Replace `YOUR_ACCESS_TOKEN_HERE` with the access token you got from the login mutation.
 
+**Example header format:**
+```json
+{
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYzNDc0Mjc5LCJpYXQiOjE3NjM0NzA2NzksImp0aSI6IjMzNGUwNTBiMTU2NTQ3NDViODYxMzM1ODZiMGY1OThjIiwidXNlcl9pZCI6MX0.4bVohbnTLG5rqQWKVr569fTM-X2msZ0oKRNWiE9iUFk"
+}
+```
+
+**Or as key-value pairs in the headers panel:**
+```
+Key:   Authorization
+Value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
 ### Step 3: Make Authenticated Requests
 
 Now you can run authenticated queries and mutations. For example:
