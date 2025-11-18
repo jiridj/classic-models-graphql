@@ -43,7 +43,13 @@ type Mutation {
       headers: [
         { name: "Content-Type", value: "application/json" }
       ]
-      postbody: "{\"username\": \"$username\", \"password\": \"$password\"}"
+      postbody: """
+      {
+        "username": "{{ .Get "username" }}",
+        "password": "{{ .Get "password" }}"
+      }
+      """
+      contenttype: "application/json"
     )
 
   signup(
@@ -60,7 +66,17 @@ type Mutation {
       headers: [
         { name: "Content-Type", value: "application/json" }
       ]
-      postbody: "{\"username\": \"$username\", \"email\": \"$email\", \"first_name\": \"$first_name\", \"last_name\": \"$last_name\", \"password\": \"$password\", \"password_confirm\": \"$password_confirm\"}"
+      postbody: """
+      {
+        "username": "{{ .Get "username" }}",
+        "email": "{{ .Get "email" }}",
+        "first_name": "{{ .Get "first_name" }}",
+        "last_name": "{{ .Get "last_name" }}",
+        "password": "{{ .Get "password" }}",
+        "password_confirm": "{{ .Get "password_confirm" }}"
+      }
+      """
+      contenttype: "application/json"
     )
 
   refreshToken(refresh: String!): TokenRefresh
@@ -70,7 +86,12 @@ type Mutation {
       headers: [
         { name: "Content-Type", value: "application/json" }
       ]
-      postbody: "{\"refresh\": \"$refresh\"}"
+      postbody: """
+      {
+        "refresh": "{{ .Get "refresh" }}"
+      }
+      """
+      contenttype: "application/json"
     )
 
   logout(refresh: String!): Boolean
@@ -81,7 +102,12 @@ type Mutation {
         { name: "Authorization", value: "Bearer ${JWT_TOKEN}" }
         { name: "Content-Type", value: "application/json" }
       ]
-      postbody: "{\"refresh\": \"$refresh\"}"
+      postbody: """
+      {
+        "refresh": "{{ .Get "refresh" }}"
+      }
+      """
+      contenttype: "application/json"
     )
 }
 
