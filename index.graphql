@@ -2,4 +2,3 @@ schema @sdl(files: ["products.graphql", "customers.graphql", "orders.graphql", "
   query: Query
   mutation: Mutation
 }
-

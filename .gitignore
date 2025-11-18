@@ -3,4 +3,7 @@ node_modules/
 .DS_Store
 *.log
 .stepzen/
+certs/*.pem
+certs/*.crt
+certs/*.key
 

@@ -14,12 +14,14 @@ type Query {
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/employees/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 
   employee(employeenumber: Int!): Employee
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/employees/$employeenumber/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 }
 
@@ -38,6 +40,7 @@ type Mutation {
       method: POST
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/employees/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
       postbody: "{\"employeenumber\": $employeenumber, \"lastname\": \"$lastname\", \"firstname\": \"$firstname\", \"extension\": \"$extension\", \"email\": \"$email\", \"jobtitle\": \"$jobtitle\", \"officecode\": \"$officecode\", \"reportsto\": $reportsto}"
     )
 
@@ -55,6 +58,7 @@ type Mutation {
       method: PUT
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/employees/$employeenumber/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
       postbody: "{\"employeenumber\": $employeenumber, \"lastname\": \"$lastname\", \"firstname\": \"$firstname\", \"extension\": \"$extension\", \"email\": \"$email\", \"jobtitle\": \"$jobtitle\", \"officecode\": \"$officecode\", \"reportsto\": $reportsto}"
     )
 
@@ -63,5 +67,6 @@ type Mutation {
       method: DELETE
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/employees/$employeenumber/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 }

@@ -12,12 +12,14 @@ type Query {
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orderdetails/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 
   orderDetail(ordernumber: Int!, productcode: String!): OrderDetail
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orderdetails/$ordernumber/$productcode/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 }
 
@@ -33,6 +35,7 @@ type Mutation {
       method: POST
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orderdetails/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
       postbody: "{\"ordernumber\": $ordernumber, \"productcode\": \"$productcode\", \"quantityordered\": $quantityordered, \"priceeach\": \"$priceeach\", \"orderlinenumber\": $orderlinenumber}"
     )
 
@@ -47,6 +50,7 @@ type Mutation {
       method: PUT
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orderdetails/$ordernumber/$productcode/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
       postbody: "{\"ordernumber\": $ordernumber, \"productcode\": \"$productcode\", \"quantityordered\": $quantityordered, \"priceeach\": \"$priceeach\", \"orderlinenumber\": $orderlinenumber}"
     )
 
@@ -55,6 +59,7 @@ type Mutation {
       method: DELETE
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orderdetails/$ordernumber/$productcode/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 }
 

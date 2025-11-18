@@ -22,24 +22,31 @@ type Query {
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
+      headers: [
+        { name: "Authorization", value: "Bearer ${headers.authorization}" }
+      ]
     )
 
   product(productcode: String!): Product
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/$productcode/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 
   productLines: [ProductLine]
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 
   productLine(productline: String!): ProductLine
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/$productline/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 }
 
@@ -59,6 +66,7 @@ type Mutation {
       method: POST
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
       postbody: "{\"productcode\": \"$productcode\", \"productname\": \"$productname\", \"productline\": \"$productline\", \"productscale\": \"$productscale\", \"productvendor\": \"$productvendor\", \"productdescription\": \"$productdescription\", \"quantityinstock\": $quantityinstock, \"buyprice\": \"$buyprice\", \"msrp\": \"$msrp\"}"
     )
 
@@ -77,6 +85,7 @@ type Mutation {
       method: PUT
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/$productcode/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
       postbody: "{\"productcode\": \"$productcode\", \"productname\": \"$productname\", \"productline\": \"$productline\", \"productscale\": \"$productscale\", \"productvendor\": \"$productvendor\", \"productdescription\": \"$productdescription\", \"quantityinstock\": $quantityinstock, \"buyprice\": \"$buyprice\", \"msrp\": \"$msrp\"}"
     )
 
@@ -85,6 +94,7 @@ type Mutation {
       method: DELETE
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/$productcode/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 
   createProductLine(
@@ -96,6 +106,7 @@ type Mutation {
       method: POST
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
       postbody: "{\"productline\": \"$productline\", \"textdescription\": $textdescription, \"htmldescription\": $htmldescription}"
     )
 
@@ -108,6 +119,7 @@ type Mutation {
       method: PUT
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/$productline/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
       postbody: "{\"productline\": \"$productline\", \"textdescription\": $textdescription, \"htmldescription\": $htmldescription}"
     )
 
@@ -116,5 +128,6 @@ type Mutation {
       method: DELETE
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/$productline/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 }

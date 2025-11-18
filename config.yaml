@@ -2,8 +2,11 @@ configurationset:
   - configuration:
       name: classic_models_rest
       Content-Type: application/json
-      Authorization: Bearer ${JWT_TOKEN}
+      # Authorization header will be passed from GraphQL request headers
+      # Clients should include: Authorization: Bearer <token> in their GraphQL requests
+      ca: STEPZEN_CLASSIC_MODELS_CA
   - configuration:
       name: classic_models_auth
       Content-Type: application/json
+      ca: STEPZEN_CLASSIC_MODELS_CA
 

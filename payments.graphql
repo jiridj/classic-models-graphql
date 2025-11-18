@@ -11,12 +11,14 @@ type Query {
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/payments/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 
   payment(customernumber: Int!, checknumber: String!): Payment
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/payments/$customernumber/$checknumber/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 }
 
@@ -31,6 +33,7 @@ type Mutation {
       method: POST
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/payments/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
       postbody: "{\"checknumber\": \"$checknumber\", \"paymentdate\": \"$paymentdate\", \"amount\": \"$amount\", \"customernumber\": $customernumber}"
     )
 
@@ -44,6 +47,7 @@ type Mutation {
       method: PUT
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/payments/$customernumber/$checknumber/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
       postbody: "{\"checknumber\": \"$checknumber\", \"paymentdate\": \"$paymentdate\", \"amount\": \"$amount\", \"customernumber\": $customernumber}"
     )
 
@@ -52,6 +56,7 @@ type Mutation {
       method: DELETE
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/payments/$customernumber/$checknumber/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 }
 

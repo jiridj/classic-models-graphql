@@ -28,8 +28,10 @@ type Query {
   me: User
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/me/"
+      configuration: "classic_models_auth"
+      tls: "classic_models_auth"
       headers: [
-        { name: "Authorization", value: "Bearer ${JWT_TOKEN}" }
+        { name: "Authorization", value: "${headers.authorization}" }
         { name: "Content-Type", value: "application/json" }
       ]
     )
@@ -40,16 +42,17 @@ type Mutation {
     @rest(
       method: POST
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/login/"
+      configuration: "classic_models_auth"
+      tls: "classic_models_auth"
       headers: [
         { name: "Content-Type", value: "application/json" }
       ]
       postbody: """
       {
-        "username": "{{ .Get "username" }}",
-        "password": "{{ .Get "password" }}"
+        "username": "{{.Get "username"}}",
+        "password": "{{.Get "password"}}"
       }
       """
-      contenttype: "application/json"
     )
 
   signup(
@@ -63,51 +66,54 @@ type Mutation {
     @rest(
       method: POST
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/signup/"
+      configuration: "classic_models_auth"
+      tls: "classic_models_auth"
       headers: [
         { name: "Content-Type", value: "application/json" }
       ]
       postbody: """
       {
-        "username": "{{ .Get "username" }}",
-        "email": "{{ .Get "email" }}",
-        "first_name": "{{ .Get "first_name" }}",
-        "last_name": "{{ .Get "last_name" }}",
-        "password": "{{ .Get "password" }}",
-        "password_confirm": "{{ .Get "password_confirm" }}"
+        "username": "{{.Get "username"}}",
+        "email": "{{.Get "email"}}",
+        "first_name": "{{.Get "first_name"}}",
+        "last_name": "{{.Get "last_name"}}",
+        "password": "{{.Get "password"}}",
+        "password_confirm": "{{.Get "password_confirm"}}"
       }
       """
-      contenttype: "application/json"
     )
 
   refreshToken(refresh: String!): TokenRefresh
     @rest(
       method: POST
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/refresh/"
+      configuration: "classic_models_auth"
+      tls: "classic_models_auth"
       headers: [
         { name: "Content-Type", value: "application/json" }
       ]
       postbody: """
       {
-        "refresh": "{{ .Get "refresh" }}"
+        "refresh": "{{.Get "refresh"}}"
       }
       """
-      contenttype: "application/json"
     )
 
   logout(refresh: String!): Boolean
     @rest(
       method: POST
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/logout/"
+      configuration: "classic_models_auth"
+      tls: "classic_models_auth"
       headers: [
-        { name: "Authorization", value: "Bearer ${JWT_TOKEN}" }
+        { name: "Authorization", value: "${headers.authorization}" }
         { name: "Content-Type", value: "application/json" }
       ]
       postbody: """
       {
-        "refresh": "{{ .Get "refresh" }}"
+        "refresh": "{{.Get "refresh"}}"
       }
       """
-      contenttype: "application/json"
     )
 }
 

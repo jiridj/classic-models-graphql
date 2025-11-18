@@ -15,12 +15,14 @@ type Query {
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/offices/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 
   office(officecode: String!): Office
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/offices/$officecode/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 }
 
@@ -40,6 +42,7 @@ type Mutation {
       method: POST
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/offices/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
       postbody: "{\"officecode\": \"$officecode\", \"city\": \"$city\", \"phone\": \"$phone\", \"addressline1\": \"$addressline1\", \"addressline2\": $addressline2, \"state\": $state, \"country\": \"$country\", \"postalcode\": \"$postalcode\", \"territory\": \"$territory\"}"
     )
 
@@ -58,6 +61,7 @@ type Mutation {
       method: PUT
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/offices/$officecode/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
       postbody: "{\"officecode\": \"$officecode\", \"city\": \"$city\", \"phone\": \"$phone\", \"addressline1\": \"$addressline1\", \"addressline2\": $addressline2, \"state\": $state, \"country\": \"$country\", \"postalcode\": \"$postalcode\", \"territory\": \"$territory\"}"
     )
 
@@ -66,5 +70,6 @@ type Mutation {
       method: DELETE
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/offices/$officecode/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 }

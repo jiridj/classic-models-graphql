@@ -13,12 +13,14 @@ type Query {
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orders/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 
   order(ordernumber: Int!): Order
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orders/$ordernumber/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 }
 
@@ -36,6 +38,7 @@ type Mutation {
       method: POST
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orders/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
       postbody: "{\"ordernumber\": $ordernumber, \"orderdate\": \"$orderdate\", \"requireddate\": \"$requireddate\", \"shippeddate\": $shippeddate, \"status\": \"$status\", \"comments\": $comments, \"customernumber\": $customernumber}"
     )
 
@@ -52,6 +55,7 @@ type Mutation {
       method: PUT
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orders/$ordernumber/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
       postbody: "{\"ordernumber\": $ordernumber, \"orderdate\": \"$orderdate\", \"requireddate\": \"$requireddate\", \"shippeddate\": $shippeddate, \"status\": \"$status\", \"comments\": $comments, \"customernumber\": $customernumber}"
     )
 
@@ -60,5 +64,6 @@ type Mutation {
       method: DELETE
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orders/$ordernumber/"
       configuration: "classic_models_rest"
+      tls: "classic_models_rest"
     )
 }
