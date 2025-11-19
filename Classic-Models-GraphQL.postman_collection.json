@@ -68,12 +68,5 @@
 			],
 			"description": "Queries for product lines"
 		}
-	],
-	"variable": [
-		{
-			"key": "baseUrl",
-			"value": "http://localhost:5001/api/classic-models/v1",
-			"type": "string"
-		}
 	]
 }
