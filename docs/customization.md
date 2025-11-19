@@ -9,8 +9,8 @@ To change the base URL, update the endpoint URLs in each `.graphql` file. For ex
 ```graphql
 @rest(
   endpoint: "https://your-new-api.com/classic-models/api/v1/products/"
-  configuration: "classic_models_rest"
-  tls: "classic_models_rest"
+  configuration: "classic_models"
+  tls: "classic_models"
 )
 ```
 
@@ -33,7 +33,7 @@ To add a new entity:
 1. Create a new `.graphql` file (e.g., `newentity.graphql`)
 2. Define the GraphQL types, queries, and mutations
 3. Add the `@rest` directives with appropriate endpoints
-4. Include the TLS configuration: `tls: "classic_models_rest"`
+4. Include the TLS configuration: `tls: "classic_models"`
 5. Import the file in `index.graphql`:
    ```graphql
    schema @sdl(files: [..., "newentity.graphql"]) {
@@ -48,7 +48,7 @@ To modify an existing query or mutation:
 
 1. Open the relevant `.graphql` file
 2. Update the `@rest` directive with new endpoints or parameters
-3. Ensure TLS configuration is included: `tls: "classic_models_rest"` or `tls: "classic_models_auth"`
+3. Ensure TLS configuration is included: `tls: "classic_models"`
 4. Validate the schema: `make validate`
 
 ## TLS Certificate Configuration

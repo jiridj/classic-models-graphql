@@ -60,13 +60,11 @@ start: setup
 		fi; \
 		echo ""; \
 		echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
-		echo "Starting StepZen with verbose logging..."; \
+		echo "Starting StepZen..."; \
 		echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
 		STEPZEN_CLASSIC_MODELS_CA="$$(cat certs/ca.pem)" \
 		STEPZEN_CLASSIC_MODELS_USERNAME="$$STEPZEN_CLASSIC_MODELS_USERNAME" \
 		STEPZEN_CLASSIC_MODELS_PASSWORD="$$STEPZEN_CLASSIC_MODELS_PASSWORD" \
-		STEPZEN_LOG_LEVEL=DEBUG \
-		DEBUG=* \
 		stepzen start; \
 	else \
 		echo "⚠ .env file not found"; \

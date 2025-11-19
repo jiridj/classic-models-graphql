@@ -26,8 +26,8 @@ type Query {
     @rest(
       method: POST
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/login/"
-      configuration: "classic_models_auth"
-      tls: "classic_models_auth"
+      configuration: "classic_models"
+      tls: "classic_models"
       headers: [
         { name: "Content-Type", value: "application/json" }
       ]

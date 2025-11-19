@@ -25,8 +25,8 @@ type Query {
   _productLines(token: Secret!): [ProductLine!]!
     @rest(
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/"
-      configuration: "classic_models_rest"
-      tls: "classic_models_rest"
+      configuration: "classic_models"
+      tls: "classic_models"
       headers: [
         { name: "Authorization", value: "Bearer $token" }
       ]

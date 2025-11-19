@@ -1,12 +1,6 @@
 configurationset:
   - configuration:
-      name: classic_models_rest
-      Content-Type: application/json
-      # Authorization header will be passed from GraphQL request headers
-      # Clients should include: Authorization: Bearer <token> in their GraphQL requests
-      ca: STEPZEN_CLASSIC_MODELS_CA
-  - configuration:
-      name: classic_models_auth
+      name: classic_models
       Content-Type: application/json
       username: STEPZEN_CLASSIC_MODELS_USERNAME
       password: STEPZEN_CLASSIC_MODELS_PASSWORD
