@@ -32,33 +32,6 @@ type Query {
       ]
     )
 
-  """
-  Fetch all products.
-  """
-  _products(token: Secret!): [Product!]!
-    @rest(
-      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/products/"
-      configuration: "classic_models_rest"
-      tls: "classic_models_rest"
-      headers: [
-        { name: "Authorization", value: "Bearer $token" }
-      ]
-    )
-
-  """
-  Get product lines with nested products.
-  First logs in to get an access token (using credentials from environment variables),
-  then fetches product lines.
-  
-  Note: Products are not automatically nested due to StepZen limitations with
-  accessing sequence context in @materializer. To get products, query them separately
-  using the _products query with the access token, then filter by productline in your
-  application code.
-  
-  Environment variables required:
-  - STEPZEN_CLASSIC_MODELS_USERNAME
-  - STEPZEN_CLASSIC_MODELS_PASSWORD
-  """
   productLines: [ProductLine!]!
     @sequence(
       steps: [

@@ -2,10 +2,41 @@
 	"info": {
 		"_postman_id": "classic-models-graphql-api",
 		"name": "Classic Models GraphQL API",
-		"description": "GraphQL API collection for Classic Models - Product Lines and Products",
+		"description": "GraphQL API collection for Classic Models",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login (Internal)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Login {\n  _login {\n    access\n    refresh\n    user {\n      id\n      username\n      email\n      first_name\n      last_name\n      is_active\n      date_joined\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": ["{{baseUrl}}"]
+						},
+						"description": "Internal login query to get an access token. Uses hardcoded username and password. This query is intended to be used in @sequence directives."
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication queries"
+		},
 		{
 			"name": "Product Lines",
 			"item": [
@@ -22,7 +53,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query GetProductLines {\n  productLines {\n    productline\n    textdescription\n    htmldescription\n    image\n    products {\n      productcode\n      productname\n      productline\n      productscale\n      productvendor\n      productdescription\n      quantityinstock\n      buyprice\n      msrp\n    }\n  }\n}",
+								"query": "query GetProductLines {\n  productLines {\n    productline\n    textdescription\n    htmldescription\n    image\n  }\n}",
 								"variables": ""
 							}
 						},
@@ -30,37 +61,12 @@
 							"raw": "{{baseUrl}}",
 							"host": ["{{baseUrl}}"]
 						},
-						"description": "Get all product lines with nested products. Uses environment variables STEPZEN_CLASSIC_MODELS_USERNAME and STEPZEN_CLASSIC_MODELS_PASSWORD for authentication."
-					},
-					"response": []
-				},
-				{
-					"name": "Get Product Lines (Basic)",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query GetProductLinesBasic {\n  productLines {\n    productline\n    textdescription\n    htmldescription\n    image\n  }\n}",
-								"variables": ""
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}",
-							"host": ["{{baseUrl}}"]
-						},
-						"description": "Get product lines without nested products (faster query)"
+						"description": "Get all product lines. This query automatically logs in and fetches product lines using a sequence."
 					},
 					"response": []
 				}
 			],
-			"description": "Queries for product lines and products"
+			"description": "Queries for product lines"
 		}
 	],
 	"variable": [
