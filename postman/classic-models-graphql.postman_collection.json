@@ -1,0 +1,376 @@
+{
+	"info": {
+		"_postman_id": "classic-models-graphql-collection",
+		"name": "Classic Models GraphQL API",
+		"description": "Complete Postman collection for the Classic Models GraphQL API.\n\nThis collection includes queries and mutations for testing the GraphQL API. Currently includes customer order history queries that demonstrate GraphQL's power over REST APIs.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Customer Order History",
+			"item": [
+				{
+					"name": "Full Order History",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify response is successful",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Parse GraphQL response",
+									"const jsonData = pm.response.json();",
+									"",
+									"// Verify no errors",
+									"pm.test(\"No GraphQL errors\", function () {",
+									"    pm.expect(jsonData.errors).to.be.undefined;",
+									"});",
+									"",
+									"// Verify customer data exists",
+									"pm.test(\"Customer data exists\", function () {",
+									"    pm.expect(jsonData.data.customerOrderHistory).to.be.an('object');",
+									"    pm.expect(jsonData.data.customerOrderHistory.customernumber).to.equal(103);",
+									"});",
+									"",
+									"// Verify orders exist",
+									"pm.test(\"Orders array exists\", function () {",
+									"    pm.expect(jsonData.data.customerOrderHistory.orders).to.be.an('array');",
+									"});",
+									"",
+									"// Log order count",
+									"if (jsonData.data.customerOrderHistory.orders) {",
+									"    console.log(`Customer has ${jsonData.data.customerOrderHistory.orders.length} orders`);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GetCustomerOrderHistory($customernumber: Int!) {\n  customerOrderHistory(customernumber: $customernumber) {\n    customernumber\n    customername\n    contactfirstname\n    contactlastname\n    phone\n    addressline1\n    addressline2\n    city\n    state\n    postalcode\n    country\n    creditlimit\n    salesrepemployeenumber\n    orders {\n      ordernumber\n      orderdate\n      requireddate\n      shippeddate\n      status\n      comments\n      customernumber\n      orderdetails {\n        id\n        ordernumber\n        productcode\n        quantityordered\n        priceeach\n        orderlinenumber\n        product {\n          productcode\n          productname\n          productline\n          productscale\n          productvendor\n          productdescription\n          quantityinstock\n          buyprice\n          msrp\n        }\n      }\n    }\n  }\n}",
+								"variables": "{\n  \"customernumber\": 103\n}"
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						},
+						"description": "Get complete order history for a customer including all nested data:\n- Customer information\n- All orders\n- Order details (line items) for each order\n- Product information for each order detail\n\nThis demonstrates how GraphQL can fetch deeply nested data in a single request, replacing what would require multiple REST API calls."
+					},
+					"response": []
+				},
+				{
+					"name": "Order History - Basic Info Only",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"No GraphQL errors\", function () {",
+									"    pm.expect(jsonData.errors).to.be.undefined;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GetCustomerOrderHistoryBasic($customernumber: Int!) {\n  customerOrderHistory(customernumber: $customernumber) {\n    customernumber\n    customername\n    city\n    country\n    orders {\n      ordernumber\n      orderdate\n      status\n    }\n  }\n}",
+								"variables": "{\n  \"customernumber\": 103\n}"
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						},
+						"description": "Demonstrates GraphQL's field selection - fetch only the basic customer and order information without nested order details or products. This reduces payload size and improves performance."
+					},
+					"response": []
+				},
+				{
+					"name": "Order History - With Order Totals",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"No GraphQL errors\", function () {",
+									"    pm.expect(jsonData.errors).to.be.undefined;",
+									"});",
+									"",
+									"// Calculate order totals",
+									"if (jsonData.data.customerOrderHistory.orders) {",
+									"    jsonData.data.customerOrderHistory.orders.forEach(order => {",
+									"        if (order.orderdetails) {",
+									"            const total = order.orderdetails.reduce((sum, detail) => {",
+									"                return sum + (parseFloat(detail.priceeach) * detail.quantityordered);",
+									"            }, 0);",
+									"            console.log(`Order ${order.ordernumber} total: $${total.toFixed(2)}`);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GetCustomerOrderHistoryWithTotals($customernumber: Int!) {\n  customerOrderHistory(customernumber: $customernumber) {\n    customernumber\n    customername\n    orders {\n      ordernumber\n      orderdate\n      status\n      orderdetails {\n        quantityordered\n        priceeach\n        product {\n          productname\n          msrp\n        }\n      }\n    }\n  }\n}",
+								"variables": "{\n  \"customernumber\": 103\n}"
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						},
+						"description": "Fetch order history with order details and product information to calculate order totals on the client side. This demonstrates fetching exactly what you need for calculations."
+					},
+					"response": []
+				},
+				{
+					"name": "Order History - Products Only",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"No GraphQL errors\", function () {",
+									"    pm.expect(jsonData.errors).to.be.undefined;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GetCustomerOrderHistoryProducts($customernumber: Int!) {\n  customerOrderHistory(customernumber: $customernumber) {\n    customernumber\n    customername\n    orders {\n      ordernumber\n      orderdate\n      orderdetails {\n        quantityordered\n        product {\n          productcode\n          productname\n          productline\n          msrp\n        }\n      }\n    }\n  }\n}",
+								"variables": "{\n  \"customernumber\": 103\n}"
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						},
+						"description": "Fetch only the product information from order history, skipping unnecessary customer and order detail fields. This shows GraphQL's efficiency in fetching only what you need."
+					},
+					"response": []
+				},
+				{
+					"name": "Order History - Recent Orders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"No GraphQL errors\", function () {",
+									"    pm.expect(jsonData.errors).to.be.undefined;",
+									"});",
+									"",
+									"// Sort orders by date and show recent ones",
+									"if (jsonData.data.customerOrderHistory.orders) {",
+									"    const sortedOrders = jsonData.data.customerOrderHistory.orders.sort((a, b) => {",
+									"        return new Date(b.orderdate) - new Date(a.orderdate);",
+									"    });",
+									"    console.log(`Most recent order: ${sortedOrders[0].ordernumber} on ${sortedOrders[0].orderdate}`);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GetCustomerOrderHistoryRecent($customernumber: Int!) {\n  customerOrderHistory(customernumber: $customernumber) {\n    customernumber\n    customername\n    orders {\n      ordernumber\n      orderdate\n      requireddate\n      shippeddate\n      status\n      orderdetails {\n        quantityordered\n        priceeach\n        product {\n          productname\n        }\n      }\n    }\n  }\n}",
+								"variables": "{\n  \"customernumber\": 103\n}"
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						},
+						"description": "Fetch order history with date information to identify recent orders. This query includes order dates and shipping information."
+					},
+					"response": []
+				}
+			],
+			"description": "Queries to test the customerOrderHistory GraphQL query. This demonstrates how GraphQL can replace multiple REST API calls with a single nested query."
+		},
+		{
+			"name": "Examples",
+			"item": [
+				{
+					"name": "Customer 103 - Atelier graphique",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  customerOrderHistory(customernumber: 103) {\n    customernumber\n    customername\n    city\n    country\n    orders {\n      ordernumber\n      orderdate\n      status\n      orderdetails {\n        quantityordered\n        priceeach\n        product {\n          productname\n        }\n      }\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						},
+						"description": "Example query for customer 103 (Atelier graphique)"
+					},
+					"response": []
+				},
+				{
+					"name": "Customer 112 - Signal Gift Stores",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  customerOrderHistory(customernumber: 112) {\n    customernumber\n    customername\n    city\n    country\n    orders {\n      ordernumber\n      orderdate\n      status\n      orderdetails {\n        quantityordered\n        priceeach\n        product {\n          productname\n        }\n      }\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						},
+						"description": "Example query for customer 112 (Signal Gift Stores)"
+					},
+					"response": []
+				},
+				{
+					"name": "Customer 114 - Australian Collectors",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  customerOrderHistory(customernumber: 114) {\n    customernumber\n    customername\n    city\n    country\n    orders {\n      ordernumber\n      orderdate\n      status\n      orderdetails {\n        quantityordered\n        priceeach\n        product {\n          productname\n        }\n      }\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						},
+						"description": "Example query for customer 114 (Australian Collectors)"
+					},
+					"response": []
+				}
+			],
+			"description": "Example queries for different customers to test the customerOrderHistory query"
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5001/api/classic-models/v1",
+			"type": "string"
+		}
+	]
+}
+
