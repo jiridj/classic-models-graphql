@@ -32,14 +32,25 @@ setup:
 start: setup
 	@echo "Starting StepZen server..."
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-	@echo "Environment Variables Status:"
-	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 	@if [ -f .env ]; then \
 		set -a; \
 		. .env; \
 		set +a; \
+		export STEPZEN_CLASSIC_MODELS_CA="$$(cat certs/ca.pem)"; \
 		echo "✓ Loaded environment variables from .env"; \
 		echo ""; \
+		echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
+		echo "Logging in to StepZen..."; \
+		echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
+		if [ -f login.sh ]; then \
+			bash login.sh || exit 1; \
+		else \
+			echo "⚠ login.sh not found, skipping automatic login"; \
+		fi; \
+		echo ""; \
+		echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
+		echo "Environment Variables Status:"; \
+		echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
 		echo "Checking required environment variables:"; \
 		if [ -n "$$STEPZEN_CLASSIC_MODELS_USERNAME" ]; then \
 			echo "  ✓ STEPZEN_CLASSIC_MODELS_USERNAME is set (value: $$STEPZEN_CLASSIC_MODELS_USERNAME)"; \

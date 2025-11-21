@@ -1,0 +1,64 @@
+# -----------------------------
+# Customer and Order Queries
+# -----------------------------
+
+type Customer {
+  customernumber: Int!
+  customername: String!
+  contactlastname: String
+  contactfirstname: String
+  phone: String
+  addressline1: String
+  addressline2: String
+  city: String
+  state: String
+  postalcode: String
+  country: String
+  salesrepemployeenumber: Int
+  creditlimit: String
+}
+
+type Order {
+  ordernumber: Int!
+  orderdate: String!
+  requireddate: String!
+  shippeddate: String
+  status: String!
+  comments: String
+  customernumber: Int!
+}
+
+type Query {
+  _customers: [Customer]
+    @rest(
+      method: GET
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/customers/"
+      configuration: "classic_models"
+      tls: "classic_models"
+      headers: [
+        { name: "Authorization", value: "Bearer $access" }
+      ]
+    )
+
+  _customer(id: Int!): Customer
+    @rest(
+      method: GET
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/customers/$id/"
+      configuration: "classic_models"
+      tls: "classic_models"
+      headers: [
+        { name: "Authorization", value: "Bearer $access" }
+      ]
+    )
+
+  _customerOrders(customerId: Int!): [Order]
+    @rest(
+      method: GET
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/customers/$customerId/orders/"
+      configuration: "classic_models"
+      tls: "classic_models"
+      headers: [
+        { name: "Authorization", value: "Bearer $access" }
+      ]
+    )
+}

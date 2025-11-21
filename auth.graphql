@@ -1,28 +1,12 @@
-type LoginResponse {
-  access: String!
-  refresh: String!
-  user: User!
-}
-
-type User {
-  id: Int!
-  username: String!
-  email: String!
-  first_name: String
-  last_name: String
-  is_active: Boolean
-  date_joined: String!
-}
+# -----------------------------
+# Authentication / Token Logic
+# -----------------------------
 
 type Query {
   """
-  Internal login query to get an access token.
-  Uses hardcoded username and password for now.
-  TODO: Find proper way to access config values from config.yaml in postbody.
-  
-  This query is intended to be used in @sequence directives.
+  Perform login and return full JSON response from REST endpoint.
   """
-  _login: LoginResponse
+  _login: JSON
     @rest(
       method: POST
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/auth/login/"
@@ -38,5 +22,15 @@ type Query {
       }
       """
     )
-}
 
+  """
+  Inject login JSON into downstream queries.
+  Downstream queries can reference {{._inject_token.access}} for the token.
+  Must return JSON type for @inject.
+  """
+  _inject_token: JSON
+    @materializer(query: "_login")
+    @inject(
+      on: { expose: true, types: "Query", fields: "_customer*|_customers|_customerOrders" }
+    )
+}
