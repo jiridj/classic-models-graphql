@@ -2,40 +2,31 @@
 
 # StepZen Login Script
 # This script reads StepZen credentials from .env file and logs in
+# Optional: Only runs if .env exists with StepZen CLI credentials
 
 # Check if .env file exists
 if [ ! -f .env ]; then
-    echo "Error: .env file not found!"
-    echo "Please create a .env file with the following variables:"
-    echo "  STEPZEN_DOMAIN=<your-domain>"
-    echo "  STEPZEN_INSTANCE_ID=<your-instance-id>"
-    echo "  STEPZEN_API_KEY=<your-api-key>"
-    echo "  STEPZEN_INTROSPECTION=<your-introspection-url>"
-    exit 1
+    echo "⚠ .env file not found - skipping StepZen CLI login"
+    echo "   (This is optional - only needed for StepZen CLI authentication)"
+    exit 0
 fi
 
 # Load environment variables from .env file
-export $(grep -v '^#' .env | xargs)
+set -a
+source .env 2>/dev/null || true
+set +a
 
 # Check if all required variables are set
-if [ -z "$STEPZEN_DOMAIN" ]; then
-    echo "Error: STEPZEN_DOMAIN is not set in .env file"
-    exit 1
-fi
-
-if [ -z "$STEPZEN_INSTANCE_ID" ]; then
-    echo "Error: STEPZEN_INSTANCE_ID is not set in .env file"
-    exit 1
-fi
-
-if [ -z "$STEPZEN_API_KEY" ]; then
-    echo "Error: STEPZEN_API_KEY is not set in .env file"
-    exit 1
-fi
-
-if [ -z "$STEPZEN_INTROSPECTION" ]; then
-    echo "Error: STEPZEN_INTROSPECTION is not set in .env file"
-    exit 1
+if [ -z "$STEPZEN_DOMAIN" ] || [ -z "$STEPZEN_INSTANCE_ID" ] || [ -z "$STEPZEN_API_KEY" ] || [ -z "$STEPZEN_INTROSPECTION" ]; then
+    echo "⚠ StepZen CLI credentials not found in .env file"
+    echo "   Skipping StepZen CLI login (this is optional)"
+    echo ""
+    echo "   To enable StepZen CLI login, add to .env:"
+    echo "     STEPZEN_DOMAIN=<your-domain>"
+    echo "     STEPZEN_INSTANCE_ID=<your-instance-id>"
+    echo "     STEPZEN_API_KEY=<your-api-key>"
+    echo "     STEPZEN_INTROSPECTION=<your-introspection-url>"
+    exit 0
 fi
 
 # Run stepzen login command

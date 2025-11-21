@@ -11,9 +11,6 @@ help:
 	@echo ""
 	@echo "Environment variables:"
 	@echo "  STEPZEN_CLASSIC_MODELS_CA      - TLS certificate (auto-set by setup)"
-	@echo "  STEPZEN_CLASSIC_MODELS_USERNAME - Username for authentication (required)"
-	@echo "  STEPZEN_CLASSIC_MODELS_PASSWORD - Password for authentication (required)"
-	@echo "  JWT_TOKEN                      - JWT token for authenticated requests"
 
 # Export TLS certificate
 setup:
@@ -32,60 +29,34 @@ setup:
 start: setup
 	@echo "Starting StepZen server..."
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-	@if [ -f .env ]; then \
-		set -a; \
-		. .env; \
-		set +a; \
-		export STEPZEN_CLASSIC_MODELS_CA="$$(cat certs/ca.pem)"; \
-		echo "✓ Loaded environment variables from .env"; \
-		echo ""; \
+	@export STEPZEN_CLASSIC_MODELS_CA="$$(cat certs/ca.pem)"; \
+	echo "✓ TLS certificate exported to STEPZEN_CLASSIC_MODELS_CA"; \
+	echo ""; \
+	if [ -f .env ] && [ -f login.sh ]; then \
 		echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
 		echo "Logging in to StepZen..."; \
 		echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
-		if [ -f login.sh ]; then \
-			bash login.sh || exit 1; \
-		else \
-			echo "⚠ login.sh not found, skipping automatic login"; \
-		fi; \
+		bash login.sh || echo "⚠ StepZen login failed or skipped"; \
 		echo ""; \
-		echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
-		echo "Environment Variables Status:"; \
-		echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
-		echo "Checking required environment variables:"; \
-		if [ -n "$$STEPZEN_CLASSIC_MODELS_USERNAME" ]; then \
-			echo "  ✓ STEPZEN_CLASSIC_MODELS_USERNAME is set (value: $$STEPZEN_CLASSIC_MODELS_USERNAME)"; \
-		else \
-			echo "  ✗ STEPZEN_CLASSIC_MODELS_USERNAME is NOT set"; \
-			echo "    Add it to .env file: STEPZEN_CLASSIC_MODELS_USERNAME=your_username"; \
-		fi; \
-		if [ -n "$$STEPZEN_CLASSIC_MODELS_PASSWORD" ]; then \
-			echo "  ✓ STEPZEN_CLASSIC_MODELS_PASSWORD is set (value: [HIDDEN])"; \
-		else \
-			echo "  ✗ STEPZEN_CLASSIC_MODELS_PASSWORD is NOT set"; \
-			echo "    Add it to .env file: STEPZEN_CLASSIC_MODELS_PASSWORD=your_password"; \
-		fi; \
-		if [ -n "$$STEPZEN_CLASSIC_MODELS_CA" ]; then \
-			echo "  ✓ STEPZEN_CLASSIC_MODELS_CA is set (length: $$(echo -n "$$STEPZEN_CLASSIC_MODELS_CA" | wc -c | tr -d ' ') chars)"; \
-		else \
-			echo "  ✗ STEPZEN_CLASSIC_MODELS_CA is NOT set"; \
-		fi; \
-		echo ""; \
-		echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
-		echo "Starting StepZen..."; \
-		echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
-		STEPZEN_CLASSIC_MODELS_CA="$$(cat certs/ca.pem)" \
-		STEPZEN_CLASSIC_MODELS_USERNAME="$$STEPZEN_CLASSIC_MODELS_USERNAME" \
-		STEPZEN_CLASSIC_MODELS_PASSWORD="$$STEPZEN_CLASSIC_MODELS_PASSWORD" \
-		stepzen start; \
-	else \
-		echo "⚠ .env file not found"; \
-		echo "  Create .env file with STEPZEN_CLASSIC_MODELS_USERNAME and STEPZEN_CLASSIC_MODELS_PASSWORD"; \
-	fi
+	fi; \
+	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
+	echo "Starting StepZen..."; \
+	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
+	STEPZEN_CLASSIC_MODELS_CA="$$(cat certs/ca.pem)" \
+	stepzen start
 
 # Deploy to StepZen
 deploy: setup
 	@echo "Deploying to StepZen..."
+	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 	@export STEPZEN_CLASSIC_MODELS_CA="$$(cat certs/ca.pem)"; \
+	if [ -f .env ] && [ -f login.sh ]; then \
+		echo "Logging in to StepZen..."; \
+		echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
+		bash login.sh || (echo "⚠ StepZen login failed, continuing anyway..."; echo ""); \
+	fi; \
+	echo "Deploying to StepZen..."; \
+	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; \
 	stepzen deploy
 
 # Validate GraphQL schema

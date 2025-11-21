@@ -25,8 +25,10 @@ type Query {
 
   """
   Inject login JSON into downstream queries.
-  Downstream queries can reference {{._inject_token.access}} for the token.
+  Downstream queries can reference $access for the token in headers.
   Must return JSON type for @inject.
+  The @inject directive automatically injects the access token from _inject_token.access
+  into queries matching the pattern.
   """
   _inject_token: JSON
     @materializer(query: "_login")
