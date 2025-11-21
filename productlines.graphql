@@ -1,0 +1,60 @@
+# -----------------------------
+# Product Line and Product Queries
+# -----------------------------
+
+type ProductLine {
+  productline: String!
+  textdescription: String
+  htmldescription: String
+  image: String
+  products: [Product]
+    @materializer(query: "_productLineProducts", arguments: [{ name: "productLine", field: "productline" }])
+}
+
+type Product {
+  productcode: String!
+  productname: String!
+  productline: String!
+  productscale: String
+  productvendor: String
+  productdescription: String
+  quantityinstock: Int
+  buyprice: String
+  msrp: String
+}
+
+type Query {
+  _productLines: [ProductLine]
+    @rest(
+      method: GET
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/"
+      configuration: "classic_models"
+      tls: "classic_models"
+      headers: [
+        { name: "Authorization", value: "Bearer $access" }
+      ]
+    )
+
+  _productLine(productLine: String!): ProductLine
+    @rest(
+      method: GET
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/$productLine/"
+      configuration: "classic_models"
+      tls: "classic_models"
+      headers: [
+        { name: "Authorization", value: "Bearer $access" }
+      ]
+    )
+
+  _productLineProducts(productLine: String!): [Product]
+    @rest(
+      method: GET
+      endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/$productLine/products/"
+      configuration: "classic_models"
+      tls: "classic_models"
+      headers: [
+        { name: "Authorization", value: "Bearer $access" }
+      ]
+    )
+}
+

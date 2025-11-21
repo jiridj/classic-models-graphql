@@ -2,7 +2,7 @@
 # Unified entry point for GraphQL API
 # -----------------------------------
 
-schema @sdl(files: ["auth.graphql", "customers.graphql"]) {
+schema @sdl(files: ["auth.graphql", "customers.graphql", "productlines.graphql"]) {
   query: Query
   mutation: Mutation
 }
