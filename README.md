@@ -43,10 +43,6 @@ The API will be available at `http://localhost:5001/classic-models/v1`
 └── docs/                 # Documentation
 ```
 
-## Testing
-
-Import the [Postman collection](Classic-Models-GraphQL.postman_collection.json) for easy testing with pre-configured queries.
-
 ## License
 
 MIT
