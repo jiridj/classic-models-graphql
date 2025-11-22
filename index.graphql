@@ -16,7 +16,7 @@ extend schema
     name: "customer-order-history"
     description: "Retrieve complete order history for a customer, including order details (products, quantities, prices). Returns orders with their status, dates, and line items."
     graphql: [
-      { expose: true, types: "Query", fields: "_customerOrders" }
+      { expose: true, types: "Query", fields: "customerOrders" }
       { expose: true, types: "Order", fields: ".*" }
       { expose: true, types: "OrderDetail", fields: ".*" }
     ]
@@ -27,7 +27,7 @@ extend schema
     name: "customer-payment-history"
     description: "Retrieve payment history for a customer. Returns all payments including check numbers, dates, and amounts."
     graphql: [
-      { expose: true, types: "Query", fields: "_customerPayments" }
+      { expose: true, types: "Query", fields: "customerPayments" }
       { expose: true, types: "Payment", fields: ".*" }
     ]
   )

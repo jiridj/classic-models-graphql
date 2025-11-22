@@ -33,6 +33,6 @@ type Query {
   _inject_token: JSON
     @materializer(query: "_login")
     @inject(
-      on: { expose: true, types: "Query", fields: "_customer*|_customers|_customerOrders|_customerPayments|_orderDetails|_productLine*|_productLines|_productLineProducts" }
+      on: { expose: true, types: "Query", fields: "customer.*|customers|customerOrders|customerPayments|orderDetails|productLine.*|productLines|productLineProducts" }
     )
 }

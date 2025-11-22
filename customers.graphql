@@ -17,9 +17,9 @@ type Customer {
   salesrepemployeenumber: Int
   creditlimit: String
   orders: [Order]
-    @materializer(query: "_customerOrders", arguments: [{ name: "customerId", field: "customernumber" }])
+    @materializer(query: "customerOrders", arguments: [{ name: "customerId", field: "customernumber" }])
   payments: [Payment]
-    @materializer(query: "_customerPayments", arguments: [{ name: "customerId", field: "customernumber" }])
+    @materializer(query: "customerPayments", arguments: [{ name: "customerId", field: "customernumber" }])
 }
 
 type Order {
@@ -31,7 +31,7 @@ type Order {
   comments: String
   customernumber: Int!
   orderdetails: [OrderDetail]
-    @materializer(query: "_orderDetails", arguments: [{ name: "orderNumber", field: "ordernumber" }])
+    @materializer(query: "orderDetails", arguments: [{ name: "orderNumber", field: "ordernumber" }])
 }
 
 type OrderDetail {
@@ -50,7 +50,7 @@ type Payment {
 }
 
 type Query {
-  _customers: [Customer]
+  customers: [Customer]
     @rest(
       method: GET
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/customers/"
@@ -61,7 +61,7 @@ type Query {
       ]
     )
 
-  _customer(id: Int!): Customer
+  customer(id: Int!): Customer
     @rest(
       method: GET
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/customers/$id/"
@@ -72,7 +72,7 @@ type Query {
       ]
     )
 
-  _customerOrders(customerId: Int!): [Order]
+  customerOrders(customerId: Int!): [Order]
     @rest(
       method: GET
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/customers/$customerId/orders/"
@@ -83,7 +83,7 @@ type Query {
       ]
     )
 
-  _orderDetails(orderNumber: Int!): [OrderDetail]
+  orderDetails(orderNumber: Int!): [OrderDetail]
     @rest(
       method: GET
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/orders/$orderNumber/order-details/"
@@ -94,7 +94,7 @@ type Query {
       ]
     )
 
-  _customerPayments(customerId: Int!): [Payment]
+  customerPayments(customerId: Int!): [Payment]
     @rest(
       method: GET
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/customers/$customerId/payments/"

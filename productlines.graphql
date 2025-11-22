@@ -8,7 +8,7 @@ type ProductLine {
   htmldescription: String
   image: String
   products: [Product]
-    @materializer(query: "_productLineProducts", arguments: [{ name: "productLine", field: "productline" }])
+    @materializer(query: "productLineProducts", arguments: [{ name: "productLine", field: "productline" }])
 }
 
 type Product {
@@ -24,7 +24,7 @@ type Product {
 }
 
 type Query {
-  _productLines: [ProductLine]
+  productLines: [ProductLine]
     @rest(
       method: GET
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/"
@@ -35,7 +35,7 @@ type Query {
       ]
     )
 
-  _productLine(productLine: String!): ProductLine
+  productLine(productLine: String!): ProductLine
     @rest(
       method: GET
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/$productLine/"
@@ -46,7 +46,7 @@ type Query {
       ]
     )
 
-  _productLineProducts(productLine: String!): [Product]
+  productLineProducts(productLine: String!): [Product]
     @rest(
       method: GET
       endpoint: "https://qnap-jiri.myqnapcloud.com/classic-models/api/v1/productlines/$productLine/products/"
