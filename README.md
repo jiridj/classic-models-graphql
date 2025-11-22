@@ -9,6 +9,7 @@ A GraphQL API for the Classic Models database built with StepZen, providing type
 - 📦 **Nested Queries** - Customers with orders, order details, and payments
 - 🛍️ **Product Catalog** - Product lines with nested products
 - 🔒 **TLS Support** - Secure connections with custom certificates
+- 🤖 **MCP Tools** - Built-in MCP tools for LLM integration (customer order & payment history)
 
 ## Quick Start
 
@@ -30,6 +31,7 @@ The API will be available at `http://localhost:5001/classic-models/v1`
 - **[Schema Reference](docs/schema.md)** - GraphQL schema types and fields
 - **[Authentication](docs/authentication.md)** - Authentication setup and usage
 - **[Deployment](docs/deployment.md)** - Deploying to StepZen
+- **[MCP Tools](docs/mcp-tools.md)** - MCP tools for LLM integration
 
 ## Project Structure
 

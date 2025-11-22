@@ -6,3 +6,28 @@ schema @sdl(files: ["auth.graphql", "customers.graphql", "productlines.graphql"]
   query: Query
   mutation: Mutation
 }
+
+# -----------------------------------
+# MCP Tools for LLM Integration
+# -----------------------------------
+
+extend schema
+  @tool(
+    name: "customer-order-history"
+    description: "Retrieve complete order history for a customer, including order details (products, quantities, prices). Returns orders with their status, dates, and line items."
+    graphql: [
+      { expose: true, types: "Query", fields: "_customerOrders" }
+      { expose: true, types: "Order", fields: ".*" }
+      { expose: true, types: "OrderDetail", fields: ".*" }
+    ]
+  )
+
+extend schema
+  @tool(
+    name: "customer-payment-history"
+    description: "Retrieve payment history for a customer. Returns all payments including check numbers, dates, and amounts."
+    graphql: [
+      { expose: true, types: "Query", fields: "_customerPayments" }
+      { expose: true, types: "Payment", fields: ".*" }
+    ]
+  )
